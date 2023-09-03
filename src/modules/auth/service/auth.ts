@@ -57,7 +57,7 @@ export default class AuthService {
     const record = await this.userRepository.findOne({ where: { email } });
 
     if (!record) {
-      throw new Exception('User not found!', 404);
+      throw new Error('User not found!');
     }
     /**
      * We use verify from argon2 to prevent 'timing based' attacks

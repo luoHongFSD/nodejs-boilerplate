@@ -1,59 +1,50 @@
-import * as dotenv from 'dotenv';
+import {env} from "../lib/env"
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-const envFound = dotenv.config();
-if (!envFound) {
-  // Throw generic error
-  throw new Error("Couldn't find .env file");
-}
 
 export default {
+  authMode:'jwt',
   /**
    *  Application port.
    */
-  port: parseInt(process.env.PORT) || 3000,
+  port: parseInt(env.PORT) || 3000,
 
   /**
    * JWT Secret
    */
-  jwtSecret: process.env.JWT_SECRET,
+  jwtSecret: env.JWT_SECRET,
 
   /**
    * MongoDB connection options.
    */
   database: {
-    type: process.env.TYPEORM_CONNECTION,
+    type: env.TYPEORM_CONNECTION as any,
     /**
      * Connection url where perform connection to.
      */
-    url: process.env.TYPEORM_HOST,
+    url: env.TYPEORM_HOST,
     /**
      * Database host.
      */
-    host: process.env.TYPEORM_HOST,
+    host: env.TYPEORM_HOST,
     /**
      * Database host port.
      */
     // tslint:disable-next-line: radix
-    port: Number.parseInt(process.env.TYPEORM_PORT),
+    port: Number.parseInt(env.TYPEORM_PORT),
     /**
      * Database username.
      */
-    username: process.env.TYPEORM_USERNAME,
+    username: env.TYPEORM_USERNAME,
     /**
      * Database password.
      */
-    password: process.env.TYPEORM_PASSWORD,
+    password: env.TYPEORM_PASSWORD,
     /**
      * Database name to connect to.
      */
-    database: process.env.TYPEORM_DATABASE,
+    database: env.TYPEORM_DATABASE,
   },
 
-  agenda: {
-    dbCollection: process.env.AGENDA_DB_COLLECTION,
-    pooltime: process.env.AGENDA_POOL_TIME,
-    concurrency: process.env.AGENDA_CONCURRENCY,
-  },
+ 
 };

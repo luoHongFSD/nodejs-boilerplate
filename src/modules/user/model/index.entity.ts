@@ -1,12 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  ObjectID,
-  ObjectIdColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import {PrimaryColumn, Column, CreateDateColumn, Entity, Index, ObjectIdColumn, UpdateDateColumn } from 'typeorm';
 import { lowercase } from './ValueTransformers';
 
 export enum Role {
@@ -16,8 +8,8 @@ export enum Role {
 
 @Entity()
 export class User {
-  @ObjectIdColumn()
-  public id: ObjectID;
+  @PrimaryColumn()
+  public id: string;
 
   @Column()
   public name: string;
@@ -30,19 +22,8 @@ export class User {
   })
   public email: string;
 
-  @Column({
-    select: false,
-    nullable: false,
-  })
-  public password: string;
 
-  @Column({
-    select: false,
-    nullable: false,
-  })
-  public salt: string;
-
-  @Column({ type: 'enum', enum: Role, default: Role.User })
+  @Column()
   public role: Role;
 
   @Column()
