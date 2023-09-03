@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@koa/cors": "^4.0.0",
+    "argon2": "^0.31.1",
     "bristol": "^0.4.0",
     "dotenv": "^16.3.1",
     "koa": "^2.14.2",

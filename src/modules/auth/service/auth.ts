@@ -1,16 +1,19 @@
 import * as argon2 from 'argon2';
 import { randomBytes } from 'crypto';
 import * as jwt from 'jsonwebtoken';
-import { Service } from 'typedi';
-import { Repository } from 'typeorm';
-import { InjectRepository } from 'typeorm-typedi-extensions';
-import config from '../config';
-import { Exception } from '../Exception';
-import { User } from '../models/User';
 
-@Service()
+import { Repository,DataSource } from 'typeorm';
+import config from '../../../config';
+import { User } from "../../user/model/index.entity"
+
+
+
+
 export default class AuthService {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+  repository:Repository<User>
+  constructor(db:DataSource) {
+    this.repository = db.getRepository(User);
+  }
 
   public async SignUp(inputUser: User): Promise<{ user: User; token: string }> {
     try {
@@ -20,7 +23,7 @@ export default class AuthService {
        * Hash password first
        */
       const hashedPassword = await argon2.hash(inputUser.password, { salt });
-      const userRecord = await this.userRepository.save({
+      const userRecord = await this.repository.save({
         ...inputUser,
         salt: salt.toString('hex'),
         password: hashedPassword,
@@ -44,17 +47,13 @@ export default class AuthService {
       Reflect.deleteProperty(user, 'salt');
       return { user, token };
     } catch (error) {
-      if (error.name === 'MongoError' && error.code === 11000) {
-        // Duplicate username
-        throw new Error('User already exist!');
-      }
-      console.log(error);
+   
       throw error;
     }
   }
 
   public async SignIn(email: string, password: string): Promise<{ user: User; token: string }> {
-    const record = await this.userRepository.findOne({ where: { email } });
+    const record = await this.repository.findOne({ where: { email } });
 
     if (!record) {
       throw new Error('User not found!');

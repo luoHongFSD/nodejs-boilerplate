@@ -14,6 +14,9 @@ export class User {
   @Column()
   public name: string;
 
+  @Column()
+  public password: string;
+
   @Index({ unique: true })
   @Column({
     unique: true,

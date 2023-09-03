@@ -1,4 +1,4 @@
-try! [resty.js](https://github.com/restyjs/resty), my newest node.js + express based framework. with controllers and middlewares built in.
+try! [resty.js](https://github.com/restyjs/resty), my newest node.js + koa based framework. with controllers and middlewares built in.
 
 # nodejs-boilerplate
 
@@ -9,11 +9,18 @@ Clean Architecture for node.js projects
 ```
 src
 │   main.ts         # Application entry point
-└───api             # Express route controllers for all the endpoints of the app
 └───config          # Environment variables and configurations
-└───loaders         # Split the startup process into modules
-└───models          # TypeORM Entities
-└───services        # All the business logic is here
+└───lib             # Split the startup process into modules
+└───middleware      # Koa middleware  TypeORM Entities
+└───modules         # All the business modules is here
+   └───auth
+      └───controller
+      └───router
+      └───service
+   └───user
+      └───controller
+      └───router
+      └───service
 └───types           # Type declaration files (d.ts) for Typescript
 
 ```
