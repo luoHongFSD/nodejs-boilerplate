@@ -1,9 +1,9 @@
 {
   "name": "nodejs-boilerplate",
   "version": "1.0.0",
-  "description": "Clean Architecture for node.js projects (Typescript + Express + TypeORM + Typedi)",
+  "description": "Clean Architecture for node.js projects (Typescript + Koa + TypeORM)",
   "main": "main.ts",
-  "repository": "https://github.com/satishbabariya/nodejs-boilerplate.git",
+  "repository": "https://github.com/luoHongFSD/nodejs-boilerplate",
   "author": "Satish Babariya <satish.babariya@gmail.com>",
   "license": "MIT",
   "private": false,

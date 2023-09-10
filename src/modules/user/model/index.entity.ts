@@ -1,4 +1,4 @@
-import {PrimaryColumn, Column, CreateDateColumn, Entity, Index, ObjectIdColumn, UpdateDateColumn } from 'typeorm';
+import { PrimaryColumn, Column, CreateDateColumn, Entity, Index, UpdateDateColumn } from 'typeorm';
 import { lowercase } from './ValueTransformers';
 
 export enum Role {
