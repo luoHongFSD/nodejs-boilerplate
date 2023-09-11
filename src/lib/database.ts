@@ -17,7 +17,7 @@ function createDateSource(): DataSource {
     password:config.database.password,
     database: config.database.database,
     synchronize: config.database.synchronize,
-    logging: true,
+    logging: false,
    
     entities: [`${_prefix}/modules/**/*.entity.${_ext}`],
     subscribers: [`${_prefix}/modules/**/*.subscriber.${_ext}`],

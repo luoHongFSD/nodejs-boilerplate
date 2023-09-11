@@ -6,38 +6,18 @@ import bodyParser from 'koa-bodyparser';
 import compress from 'koa-compress';
 import session from 'koa-generic-session';
 
-
-import { logger } from './logger';
-
-import { notFoundHandler } from '../middleware/not-found';
-import { errorHandler } from '../middleware/error-handler';
-import { checkauth } from "../middleware/checkauth"
-import attachDateSource from "../middleware/attachDateSource"
-
-import dataSource from './database';
-
 import routes from "../modules"
+import { errorHandler ,notFoundHandler } from "./middleware"
+import middleware from "../middlewares"
 
-/**
- * Creates and returns a new Koa application.
- * Does *NOT* call `listen`!
- *
- * @return {Promise<http.Server>} The configured app.
- */
-export async function createServer() {
-  logger.debug('dataSoure initialize...');
-  await dataSource.initialize();
-
-  logger.debug('Creating server...');
-  const app = new Koa();
-
+export default (app:Koa)=>{
   app.proxy = true;
  
   app.keys = ['keys', 'keykeys'];
   
-  app.use(attachDateSource(dataSource))
+  app
     // Top middleware is the error handler.
-    .use(errorHandler)
+    .use(errorHandler())
     // Compress all responses.
     .use(compress())
     // Adds ctx.ok(), ctx.notFound(), etc..
@@ -47,11 +27,11 @@ export async function createServer() {
     .use(session())
    
     // Parses request bodies.
-    .use(bodyParser())
-    .use(checkauth())
-    
-    .use(routes())
-    .use(notFoundHandler);
+    .use(bodyParser());
+  
+  app.use(middleware()); 
+  app.use(routes())
+    .use(notFoundHandler());
   
   // Creates a http server ready to listen.
   const server = http.createServer(app.callback());
@@ -61,9 +41,9 @@ export async function createServer() {
     // You should tear down database connections, TCP connections, etc
     // here to make sure Jest's watch-mode some process management
     // tool does not release resources.
-    logger.debug('Server closing, bye!');
+    global.$logger.debug('Server closing, bye!');
   });
 
-  logger.debug('Server created, ready to listen', { scope: 'startup' });
+  global.$logger.debug('Server created, ready to listen', { scope: 'startup' });
   return server;
 }

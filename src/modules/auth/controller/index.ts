@@ -15,7 +15,7 @@ export function getAuth(){
 
  async function controller(ctx){
   
-    const service = useService(ctx.db)
+    const service = useService(global.$db)
     const users = await service.findOne({where:{name:ctx.query.username}})
     const user = {userId:users.id}
     

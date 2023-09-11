@@ -3,7 +3,7 @@ import config from "../config";
 import { isRevoked } from "koa-jwt-blacklist"
 const whiteList = ['/api/reg','/api/login']
 
-export  function checkauth() {
+export default function checkauth() {
   if(config.authMode === 'jwt'){
    return jwt({ secret: config.jwtSecret,isRevoked:isRevoked,debug:true }).unless({
     path: whiteList

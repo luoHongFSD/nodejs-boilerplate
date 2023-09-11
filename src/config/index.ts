@@ -1,8 +1,6 @@
-import { env } from "../lib/env"
 
-
-
-export default {
+import { env } from "../lib/env";
+export default  {
   authMode:'jwt',
   /**
    *  Application port.
