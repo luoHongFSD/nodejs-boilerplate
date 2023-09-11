@@ -3,11 +3,9 @@ import { randomBytes } from 'crypto';
 import * as jwt from 'jsonwebtoken';
 
 import { Repository,DataSource } from 'typeorm';
-import config from '../../../config';
+//import config from '../../../config';
 import { User } from "../../user/model/index.entity"
-
-
-
+import {v4 as uuid} from "uuid"
 
 export default class AuthService {
   repository:Repository<User>
@@ -15,7 +13,7 @@ export default class AuthService {
     this.repository = db.getRepository(User);
   }
 
-  public async SignUp(inputUser: User): Promise<{ user: User; token: string }> {
+  public async SignUp(inputUser: any): Promise<{ user: User; token: string }> {
     try {
       const salt = randomBytes(32);
 
@@ -53,6 +51,7 @@ export default class AuthService {
   }
 
   public async SignIn(email: string, password: string): Promise<{ user: User; token: string }> {
+
     const record = await this.repository.findOne({ where: { email } });
 
     if (!record) {
@@ -63,6 +62,7 @@ export default class AuthService {
      */
     const validPassword = await argon2.verify(record.password, password);
     if (validPassword) {
+
       const token = this.generateToken(record);
       const user = record;
       Reflect.deleteProperty(user, 'password');
@@ -80,15 +80,16 @@ export default class AuthService {
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
-
+    
     return jwt.sign(
       {
         id: user.id, // We are gonna use this in the middleware 'isAuth'
         role: user.role,
         name: user.name,
+        sub: uuid(),
         exp: exp.getTime() / 1000,
       },
-      config.jwtSecret,
+      global.$config.jwtSecret,
     );
   }
 }

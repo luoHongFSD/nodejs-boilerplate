@@ -7,14 +7,16 @@ import { env } from "./env"
 function createDateSource(): DataSource {
   const _prefix = env.NODE_ENV === 'development'?'src':'dist'; 
   const _ext =  env.NODE_ENV === 'development'?'ts':'js';
-  const _synchronize = env.NODE_ENV === 'development'?true:false;
+
   
   const dataSourceOptions: DataSourceOptions = {
     type: config.database.type,
-    // host: config.database.host,
-    // port: config.database.port,
+    username:config.database.username,
+    host: config.database.host,
+    port: config.database.port,
+    password:config.database.password,
     database: config.database.database,
-    synchronize: _synchronize,
+    synchronize: config.database.synchronize,
     logging: true,
    
     entities: [`${_prefix}/modules/**/*.entity.${_ext}`],

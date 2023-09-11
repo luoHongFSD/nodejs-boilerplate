@@ -1,15 +1,12 @@
 import Router from 'koa-router';
 
 const router = new Router();
-import { getAuth } from "../controller";
 
-router
-.get('/auth',getAuth())
-.post('/login',  async (ctx, next) => {
-  ctx.body = {
-    "status" : "auth page"
-}   
-})
+import reg from "../controller/reg"
+import login from "../controller/login"
+
+router.post('/login',login)
+router.post('/reg',reg)
 
 
 

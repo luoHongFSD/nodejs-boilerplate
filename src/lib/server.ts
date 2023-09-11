@@ -17,7 +17,7 @@ import attachDateSource from "../middleware/attachDateSource"
 import dataSource from './database';
 
 import routes from "../modules"
-import "reflect-metadata"
+
 /**
  * Creates and returns a new Koa application.
  * Does *NOT* call `listen`!

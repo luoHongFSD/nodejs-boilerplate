@@ -1,8 +1,12 @@
 import { createServer } from './lib/server'
 import { env } from './lib/env'
 import { logger } from './lib/logger'
+import "reflect-metadata";
+import config from "./config"
 
-
+global.$config = config;
+global.$env = env;
+global.$logger = logger;
 createServer().then(
   app =>
     app.listen(env.PORT, () => {

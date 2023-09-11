@@ -16,8 +16,10 @@ export class User {
 
   @Column()
   public password: string;
+  @Column()
+  public salt:string;
 
-  @Index({ unique: true })
+
   @Column({
     unique: true,
     nullable: false,

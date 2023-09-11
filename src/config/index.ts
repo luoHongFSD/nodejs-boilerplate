@@ -44,6 +44,7 @@ export default {
      * Database name to connect to.
      */
     database: env.TYPEORM_DATABASE,
+    synchronize:env.TYPEORM_SYNCHRONIZE,
   },
 
  
