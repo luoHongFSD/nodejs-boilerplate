@@ -4,6 +4,42 @@ import { celebrate, Joi } from 'koa-celebrate'
 import compose from 'koa-compose';
 import { useService } from "../service"
 
+
+export default function useController(){
+     const serivce = useService(global.$db)
+
+  
+    function getAll(){
+
+    }
+
+    function getPage(){
+
+    }
+    function getDetail(){
+
+    }
+    function postDetail(){
+
+    }
+    function putDetail(){
+
+    }
+    function delDetail(){
+
+    }
+
+    return {
+      getAll,
+      getPage,
+      getDetail,
+      postDetail,
+      putDetail,
+      delDetail
+    }
+}
+
+
 export function getAuth(){
   
   const validator = celebrate({
@@ -42,3 +78,4 @@ export function postAuth(){
      controller
    ])
 }
+

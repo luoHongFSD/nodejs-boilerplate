@@ -7,7 +7,7 @@ import compress from 'koa-compress';
 import session from 'koa-generic-session';
 
 import routes from "../modules"
-import { errorHandler ,notFoundHandler } from "./middleware"
+import { errorHandler } from "./middleware"
 import middleware from "../middlewares"
 
 export default (app:Koa)=>{
@@ -27,11 +27,9 @@ export default (app:Koa)=>{
     .use(session())
    
     // Parses request bodies.
-    .use(bodyParser());
-  
-  app.use(middleware()); 
-  app.use(routes())
-    .use(notFoundHandler());
+    .use(bodyParser())
+    .use(routes())
+   
   
   // Creates a http server ready to listen.
   const server = http.createServer(app.callback());

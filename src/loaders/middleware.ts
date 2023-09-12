@@ -5,6 +5,10 @@ export function errorHandler(){
   return async function errorHandler(ctx, next) {
     try {
       await next()
+      // const msg = `${ctx.request.method} ${ctx.request.path}`
+      // ctx.notFound({
+      //   message: `No endpoint matched your request: ${msg}`
+      // })
     } catch (err) {
       /* istanbul ignore next */
       ctx.status = err.statusCode || 500
@@ -21,17 +25,6 @@ export function errorHandler(){
 
 
 
-/**
- * Let the user know nothing was found here.
- */
 
-export function notFoundHandler(){
-  return async function notFoundHandler(ctx) {
-    const msg = `${ctx.request.method} ${ctx.request.path}`
-    ctx.notFound({
-      message: `No endpoint matched your request: ${msg}`
-    })
-  }
-}
 
  

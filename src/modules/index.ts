@@ -1,28 +1,40 @@
-import glob from 'glob'
 import Router from 'koa-router'
 import compose from 'koa-compose';
 
 
-export default function routes() {
-  const _ext = global.$env.NODE_ENV === 'development'?'ts':'js';
-  const router = new Router({prefix:'/api'});
+Router.prototype.group = function (routes: Array<any>) {
+  routes.forEach((route) => {
+    this.use(route.routes());
+  });
+  return this
+};
 
+Router.prototype.mount = function(){
+    return [this.routes(),this.allowedMethods()]
+}
 
-  glob(`${__dirname}/*`, { ignore: `**/index.${_ext}` }, (err, matches) => {
-    if (err) { throw err }
-  
-    matches.forEach((mod) => {
-      const route = require(`${mod}/router`)
-      const routes = route.default
-      router.use(routes.routes(), routes.allowedMethods())
-    })
-  })
+export default function routes(options: any) {
+  const authRouter = new Router();
+  authRouter.post('/auth', async (ctx) => {
+    ctx.ok({ message: 'auth' });
+  });
 
+  const userRouter = new Router();
 
-  return compose(
-      [
-        router.routes(),
-        router.allowedMethods()
-      ]
-  )
+  userRouter.get('/user', async (ctx, next) => {
+    ctx.body = 'userModels';
+  });
+
+  const v1Router = new Router({ prefix: '/v1' });
+
+  //v1Router.use(checkauth());
+  v1Router.group([userRouter]);
+
+  const v2Router = new Router({ prefix: '/v2' });
+  v2Router.group([userRouter]);
+
+  const api = new Router({ prefix: '/api' });
+  api.group([authRouter, v1Router, v2Router]);
+
+  return compose(api.mount());
 }
