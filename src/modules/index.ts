@@ -13,7 +13,7 @@ Router.prototype.mount = function(){
     return [this.routes(),this.allowedMethods()]
 }
 
-export default function routes(options: any) {
+export default function routes() {
   const authRouter = new Router();
   authRouter.post('/auth', async (ctx) => {
     ctx.ok({ message: 'auth' });
@@ -26,15 +26,13 @@ export default function routes(options: any) {
   });
 
   const v1Router = new Router({ prefix: '/v1' });
-
-  //v1Router.use(checkauth());
-  v1Router.group([userRouter]);
-
   const v2Router = new Router({ prefix: '/v2' });
-  v2Router.group([userRouter]);
+
 
   const api = new Router({ prefix: '/api' });
+  v2Router.group([userRouter]);
+  v1Router.group([userRouter]);
   api.group([authRouter, v1Router, v2Router]);
-
+  
   return compose(api.mount());
 }
